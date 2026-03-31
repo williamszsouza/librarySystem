@@ -2,7 +2,7 @@
 
 Sistema de gerenciamento de biblioteca com CRUD de livros, controle de empréstimos, autenticação com níveis de acesso e notificações por e-mail.
 
-**Stack:** Laravel 13 · Vue 3 · Tailwind CSS · SQLite · Laravel Sanctum
+**Stack:** Laravel 13 · Vue 3 · Tailwind CSS · SQLite/Mysql · Laravel Sanctum
 
 ---
 
@@ -264,7 +264,11 @@ php artisan loans:send-reminders
 ```
 
 ## Diagramas do projeto:
+Estruturas das tabelas:
 
+<img width="1090" height="491" alt="Image" src="https://github.com/user-attachments/assets/34c039d1-03a4-4112-b889-ebc6fc28007d" />
+
+Estrutura das pastas do projeto:
 
 
 # Acessar o tinker (console interativo)

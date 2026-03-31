@@ -14,6 +14,7 @@ Antes de começar, certifique-se de ter instalado:
 - Composer
 - Node.js 18+ e npm
 - SQLite (já incluso no PHP por padrão)
+- MySql
 
 ---
 

@@ -109,7 +109,7 @@ npm install
 
 ### Modo desenvolvimento 
 
-O projeto de dois terminais abertos, um para rodar o front e outro para rodar o back, o comando pra rodar cada um vai ficar abaixo:
+O projeto precisa de dois terminais abertos, um para rodar o front e outro para rodar o back, o comando pra rodar cada um vai ficar abaixo:
 
 ```bash
 npm run dev

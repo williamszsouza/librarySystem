@@ -1,58 +1,272 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# LibrarySystem
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Sistema de gerenciamento de biblioteca com CRUD de livros, controle de empréstimos, autenticação com níveis de acesso e notificações por e-mail.
 
-## About Laravel
+**Stack:** Laravel 13 · Vue 3 · Tailwind CSS · SQLite · Laravel Sanctum
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Requisitos
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Antes de começar, certifique-se de ter instalado:
 
-## Learning Laravel
+- PHP 8.3+
+- Composer
+- Node.js 18+ e npm
+- SQLite (já incluso no PHP por padrão)
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+---
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Instalação
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
-
-## Agentic Development
-
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+### 1. Clone o repositório
 
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+git clone <url-do-repositorio>
+cd livraria_system
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+### 2. Instale as dependências PHP
 
-## Contributing
+```bash
+composer install
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### 3. Configure o ambiente
 
-## Code of Conduct
+Copie o arquivo de exemplo e gere a chave da aplicação:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```bash
+cp .env.example .env
+php artisan key:generate
+```
 
-## Security Vulnerabilities
+### 4. Configure o banco de dados
+O projeto utiliza MySQL por padrão, mas pode ser facilmente adaptado para rodar em SQLite para agilizar os testes.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### Opção A: MySQL (Padrão de Desenvolvimento)
 
-## License
+1 - Crie um banco de dados no seu servidor (ex: library_system).
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+2 - No seu arquivo .env, configure as credenciais:
+```bash
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=library_system
+DB_USERNAME=seu_usuario
+DB_PASSWORD=sua_senha
+```
+
+## Opção B: Sqlite
+Crie o arquivo do banco:
+
+```bash
+touch database/database.sqlite
+```
+
+No seu arquivo .env, altere a conexão e comente as linhas de host/porta
+```bash
+DB_CONNECTION=sqlite
+# DB_HOST=127.0.0.1...
+```
+
+> Se quiser usar MySQL, edite o `.env` e descomente as variáveis `DB_HOST`, `DB_PORT`, `DB_DATABASE`, `DB_USERNAME` e `DB_PASSWORD`, alterando `DB_CONNECTION=sqlite` para `DB_CONNECTION=mysql`.
+
+### 5. Execute as migrations
+
+```bash
+php artisan migrate
+```
+
+Isso criará as tabelas: `users`, `books`, `loans`, `personal_access_tokens`, `jobs`, `cache` e `sessions`.
+
+### 6. Popule o banco com dados iniciais
+
+```bash
+php artisan db:seed
+```
+
+O seeder cria:
+- **1 usuário administrador:** `admin@gmail.com` / `admin123`
+- **10 usuários comuns** gerados automaticamente via factory
+- **Livros** importados da Google Books API nas categorias Ficção Científica, Romance e Drama
+
+> ⚠️ O `BookSeeder` faz requisições à API do Google Books. Certifique-se de ter conexão com a internet ao rodar o seed.
+
+### 7. Instale as dependências JavaScript
+
+```bash
+npm install
+```
+
+---
+
+## Rodando o projeto
+
+### Modo desenvolvimento 
+
+O projeto de dois terminais abertos, um para rodar o front e outro para rodar o back, o comando pra rodar cada um vai ficar abaixo:
+
+```bash
+npm run dev
+php artisan serve
+```
+Acesse o sistema em: **http://localhost:8000/login**
+
+---
+
+## Configuração de e-mail
+
+O projeto usa `MAIL_MAILER=log` por padrão — os e-mails são gravados no arquivo de log em vez de serem enviados de verdade. É a configuração ideal para desenvolvimento.
+
+Para visualizar os e-mails gerados:
+
+```bash
+tail -f storage/logs/laravel.log
+```
+
+Para usar o **Mailtrap** (simula caixa de entrada real), edite o `.env`:
+
+```env
+MAIL_MAILER=smtp
+MAIL_HOST=sandbox.smtp.mailtrap.io
+MAIL_PORT=2525
+MAIL_USERNAME=seu_usuario_mailtrap
+MAIL_PASSWORD=sua_senha_mailtrap
+MAIL_FROM_ADDRESS="sistema@libraryms.com"
+MAIL_FROM_NAME="LibrarySystem"
+```
+
+---
+
+## Agendador de tarefas (notificações de prazo)
+
+O sistema verifica automaticamente os empréstimos próximos do vencimento e envia e-mail quando faltam 12 horas ou menos.
+
+Para que isso funcione em produção, adicione o agendador do Laravel ao cron do servidor:
+
+```bash
+* * * * * cd /caminho/do/projeto && php artisan schedule:run >> /dev/null 2>&1
+```
+
+Para testar manualmente o envio de lembretes:
+
+```bash
+php artisan loans:send-reminders
+```
+
+---
+
+## Fila de jobs
+
+O `QUEUE_CONNECTION=database` já está configurado no `.env.example`. A fila é necessária para o envio assíncrono de e-mails.
+
+O É necessario rodar o comando para iniciar o worker manualmente!:
+
+```bash
+php artisan queue:listen --tries=1
+```
+
+---
+
+## Credenciais padrão (após seed)
+
+| Perfil | E-mail | Senha |
+|---|---|---|
+| Administrador | admin@gmail.com | admin123 |
+| Usuário comum | *(gerado aleatoriamente)* | password |
+
+Para ver os e-mails dos usuários gerados:
+
+```bash
+php artisan tinker
+>>> App\Models\User::where('is_admin', false)->pluck('email', 'id')
+```
+
+---
+
+## Funcionalidades
+
+### Livros
+- Listagem pública com busca por título e paginação (10 por página)
+- Cadastro, edição e exclusão para usuários autenticados
+- Usuário comum só edita/exclui os próprios livros
+- Administrador pode editar e excluir qualquer livro
+
+### Autenticação
+- Registro e login via Laravel Sanctum (token Bearer)
+- Dois níveis de acesso: administrador e usuário comum
+
+### Empréstimos
+- Usuário autenticado pode emprestar livros disponíveis
+- Limite de 3 empréstimos simultâneos por usuário
+- Prazo de devolução de 2 dias
+- Livro emprestado fica indisponível até a devolução
+
+### Painel administrativo
+- Dashboard com estatísticas: total de livros, disponíveis, emprestados e atrasados
+- Listagem de todos os empréstimos ativos com data de empréstimo e vencimento
+- Registro de devolução de livros
+
+### Meus Empréstimos (usuário comum)
+- Visualização dos próprios empréstimos ativos
+- Indicação visual de empréstimos em dia ou atrasados
+- Somente leitura — sem ação de devolução
+
+### Notificações
+- E-mail automático enviado quando faltam 12 horas ou menos para o vencimento
+- Cada empréstimo recebe no máximo um aviso (`notification_sent`)
+
+---
+
+## Estrutura do projeto
+
+```
+app/
+  Console/Commands/    → SendLoanReminders (comando de notificação)
+  Http/Controllers/    → AuthController, BookController, LoanController, UserController
+  Http/Requests/       → BookRequest, LoginRequest, RegisterRequest, StoreLoanRequest
+  Mail/                → LoanDueReminder (template de e-mail)
+  Models/              → User, Book, Loan
+  Policies/            → BookPolicy (autorização de edição/exclusão)
+  Services/            → AuthService, BookService, LoanService
+
+database/
+  migrations/          → users, books, loans, tokens, jobs, cache
+  seeders/             → DatabaseSeeder, BookSeeder
+
+resources/js/src/
+  views/               → Books, Loans, MyLoans, Login, Register, Users, Dashboard
+  views/layouts/       → MainLayout (sidebar + navegação)
+  router/              → index.js (rotas e guards)
+  store/               → auth.js (Pinia)
+
+routes/
+  api.php              → todas as rotas da API REST
+  console.php          → agendamento do loans:send-reminders
+```
+
+---
+
+## Comandos úteis
+
+```bash
+# Resetar banco e rodar seeders do zero
+php artisan migrate:fresh --seed
+
+# Ver rotas da API
+php artisan route:list --path=api
+
+# Testar envio de lembretes manualmente
+php artisan loans:send-reminders
+```
+
+## Diagramas do projeto:
+
+
+
+# Acessar o tinker (console interativo)
+php artisan tinker
+```

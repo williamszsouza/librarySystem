@@ -268,7 +268,8 @@ Estruturas das tabelas:
 
 <img width="1090" height="491" alt="Image" src="https://github.com/user-attachments/assets/34c039d1-03a4-4112-b889-ebc6fc28007d" />
 
-Estrutura das pastas do projeto:
+Diagrama do projeto:
+![Image](https://github.com/user-attachments/assets/8ccce386-1953-42d1-ae16-2d1154ab0559)
 
 
 # Acessar o tinker (console interativo)

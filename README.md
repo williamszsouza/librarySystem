@@ -264,14 +264,19 @@ php artisan loans:send-reminders
 ```
 
 ## Diagramas do projeto:
+
 Estruturas das tabelas:
 
 <img width="1090" height="491" alt="Image" src="https://github.com/user-attachments/assets/34c039d1-03a4-4112-b889-ebc6fc28007d" />
 
 Diagrama do projeto:
+
 ![Image](https://github.com/user-attachments/assets/8ccce386-1953-42d1-ae16-2d1154ab0559)
 
+# Template do email de aviso de vencimentto do prazo de devolução
+<img width="1691" height="734" alt="Image" src="https://github.com/user-attachments/assets/7f7be230-0e58-4fe2-b40a-c5e7d8808c11" />
 
 # Acessar o tinker (console interativo)
+```bash
 php artisan tinker
 ```

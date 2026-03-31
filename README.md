@@ -87,6 +87,8 @@ Isso criará as tabelas: `users`, `books`, `loans`, `personal_access_tokens`, `j
 ```bash
 php artisan db:seed
 ```
+# AVISO
+O seeder de livros pode falhar caso o limite de requisições diaria seja ultrapassada, nesse caso sera necessario criar livros manualmente.
 
 O seeder cria:
 - **1 usuário administrador:** `admin@gmail.com` / `admin123`

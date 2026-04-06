@@ -20,7 +20,7 @@ class BookSeeder extends Seeder
                 'subject:"Drama"'
             ];
             foreach ($queries as $query) {
-            $response = Http::get("https://www.googleapis.com/books/v1/volumes?q={$query}&maxResults=5&langRestrict=pt");
+            $response = Http::Withoutverifying()->get("https://www.googleapis.com/books/v1/volumes?q={$query}&maxResults=5&langRestrict=pt");
 
             if ($response->successful() && isset($response['items'])) {
                 
